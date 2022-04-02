@@ -1,0 +1,324 @@
+﻿@using WebApplication1.Models;
+@model Sevkiyat
+
+@{
+    ViewBag.Title = "Sevkiyatduzenle";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    DataContext db = new DataContext();
+
+    var araclar = db.Aracs.ToList();
+    var soforler = db.Sofors.ToList();
+}
+
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xxl-3">
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title mb-0">Sevkiyat Düzenle-Sevkiyat No:@Model.sevkiyatno</h5>
+                                <p class="mt-2">Bu sayfada yalnızca sevkiyatın durumunu düzenleyebilirsiniz sevkiyat bilgilerinde bir yanlışlık var ise sevkiyatı iptal ederek yeni bir sevkiyat oluşturun.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end card-->
+            </div>
+            <!--end col-->
+            <div class="col-xxl-9">
+                <div class="card mt-xxl-n5">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0"
+                            role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="./html/default/#personalDetails"
+                                   role="tab">
+                                    <i class="fas fa-home"></i>
+                                    Transportation Details
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="personalDetails" role="tabpanel">
+                                <form action="~/Home/Sevkiyatiptal/@Model.sevkiyatno" method="post" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="mb-3">
+                                                <label for="firstnameInput" class="form-label">Çıkış Noktası</label>
+                                                <input type="text" class="form-control" id="cikisnoktasi"
+                                                       placeholder="Çıkış Noktası Yazım" value="@Model.cikisnoktasi" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="mb-3">
+                                                <label for="firstnameInput" class="form-label">Varış Noktası</label>
+                                                <input type="text" class="form-control" id="varisnoktasi"
+                                                       placeholder="Varış Noktası Yazın" value="@Model.varisnoktasi" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 text-center">
+                                            <div class="mt-4">
+                                                <a class="btn btn-info btn-md" type="button" id="donebtn">Rota Oluştur</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header border-0 align-items-center d-flex">
+                                                    <h4 class="card-title mb-0 flex-grow-1">Sevkiyat Süresince Araç Aşağıdaki Rotayı Takip Edecektir.</h4>
+                                                </div><!-- end card header -->
+                                                <div class="card-body p-0 pb-2" id="map" style="height: 400px;">
+
+                                                </div><!-- end card body -->
+                                                <div class="card-footer p-0 mt-2" id="output"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label for="skillsInput" class="form-label">Araç Seçin</label>
+                                                <select class="form-control" name="skillsInput" data-choices
+                                                        data-choices-text-unique-true multiple id="skillsInput" disabled>
+                                                    @foreach (var item in araclar)
+                                                    {
+                                                        if (item.Id == Model.aracId)
+                                                        {
+                                                            <option value="@item.Id" selected>@item.plaka-@item.marka-@item.aractipi</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@item.Id">@item.plaka-@item.marka-@item.aractipi</option>
+
+                                                        }
+                                                    }
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label for="skillsInput" class="form-label">Şoför Seçin</label>
+                                                <select class="form-control" name="skillsInput" data-choices
+                                                        data-choices-text-unique-true multiple id="skillsInput" disabled>
+                                                    @foreach (var item in soforler)
+                                                    {
+                                                        if (item.Id == Model.soforId)
+                                                        {
+                                                            <option value="@item.Id" selected>@item.adi @item.soyadi</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@item.Id">@item.adi @item.soyadi</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label for="firstnameInput" class="form-label">Taşınan Ürün</label>
+                                                <input type="text" class="form-control" id="firstnameInput"
+                                                       placeholder="Enter your firstname" value="@Model.urun" disabled>
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label for="skillsInput" class="form-label">Durum</label>
+                                                <select class="form-control" name="duruminput" data-choices
+                                                        data-choices-text-unique-true multiple id="skillsInput">
+                                                    <option value="Hazırlanıyor">Hazırlanıyor</option>
+                                                    <option value="Devam Ediyor" selected>Devam Ediyor</option>
+                                                    <option value="Tamamlandı">Tamamlandı</option>
+                                                    <option value="İptal Edildi">İptal Edildi</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-lg-12">
+                                            <div class="hstack gap-2 justify-content-end">
+                                                <button type="submit"
+                                                        class="btn btn-primary">
+                                                    Kaydet
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                    </div>
+                                    <!--end row-->
+                                </form>
+                            </div>
+                            <!--end tab-pane-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+
+    </div>
+    <!-- container-fluid -->
+</div><!-- End Page-content -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHrcxK3rvijsw_SZFYUh7wapTDufPXjIs&libraries=places&callback=initMap&v=weekly" async></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script>
+   
+</script>
+<script>
+
+    var map;
+    var marker;
+    var directionsService;
+    var directionsDisplay;
+
+
+     $(document).ready(function () {
+        console.log("document ready calıstı");
+        calcRoute();
+        $("#donebtn").trigger('click');
+
+        var sevkiyatId =@Html.Raw(Json.Encode(Model.Id));
+        getCoord(sevkiyatId);
+    });
+
+
+    function initMap() {
+        var latlng = { lat: 39.925533, lng: 32.866287 };
+
+        var mapOptions = {
+            center: latlng,
+            zoom: 7,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+         map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+         directionsService = new google.maps.DirectionsService();
+         directionsDisplay = new google.maps.DirectionsRenderer();
+        directionsDisplay.setMap(map);
+
+
+        document.getElementById("donebtn").addEventListener('click', calcRoute, true);
+
+        var options = {
+            types: ['(cities)']
+        }
+
+        var input1 = document.getElementById("cikisnoktasi");
+        var autocomplete1 = new google.maps.places.Autocomplete(input1, options);
+
+        var input2 = document.getElementById("varisnoktasi");
+        var autocomplete2 = new google.maps.places.Autocomplete(input2, options);
+    }
+    function addMarker(lati,longi) {
+        marker = new google.maps.Marker({
+            position: { lat: lati, lng:longi },
+            map: map,
+            icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+            zIndex: 100
+        });
+    }
+
+
+    function calcRoute() {
+        var request = {
+            origin: document.getElementById("cikisnoktasi").value,
+            destination: document.getElementById("varisnoktasi").value,
+            travelMode: google.maps.TravelMode.DRIVING,
+            unitSystem: google.maps.UnitSystem.IMPRERIAL
+        }
+
+        directionsService.route(request, (result, status) => {
+            if (status == google.maps.DirectionsStatus.OK) {
+                const output = document.querySelector('#output');
+                output.innerHTML = "<div class='alert-info'>Cikis Noktası:" + document.getElementById("cikisnoktasi").value + ".<br/>Varış Noktası:" + document.getElementById("varisnoktasi").value + ".<br/>Mesafe:" + result.routes[0].legs[0].distance.text + ".<br/>Tahmini Varış Süresi:" + result.routes[0].legs[0].duration.text + ".</div>";
+                directionsDisplay.setDirections(result);
+                var coordinates = google.maps.geometry.encoding.decodePath(result.routes[0].overview_polyline);
+                console.log(String(coordinates));
+            }
+            else {
+                directionsDisplay.setDirections({ routes: [] });
+                map.center(latlng);
+            }
+        });
+    }
+</script>
+<script>
+    var sevkiyatId =@Html.Raw(Json.Encode(Model.Id));
+    var lastcount;
+    function getCoord(sevkiyatId) {
+        console.log("Method Çalıştı")
+        $.ajax({
+            type: 'POST',
+            dataType: 'JSON',
+            url: '/Home/getCoords/',
+            data: { id: sevkiyatId },
+            success: function (data) {
+                console.log(data);
+                 lastcount = data.length;
+                var lastlat = data[lastcount - 1].latitude;
+                var lastlong = data[lastcount - 1].longtitude;
+                console.log("Count:" + lastcount + "LastLat:" + lastlat + "LastLong:" + lastlong);
+                drawComp(data);
+                addMarker(Number(lastlat), Number(lastlong));
+                moveMarker(sevkiyatId);
+
+            }
+        });
+    }
+
+    function moveMarker(sevkiyatId) {
+
+        $.ajax({
+            type: 'POST',
+            dataType: 'JSON',
+            url: '/Home/getCoords/',
+            data: { id: sevkiyatId },
+            success: function (data) {
+                console.log(data);
+                var newcount = data.length;
+                if (newcount - lastcount > 0) {
+                    var lastlat = data[newcount - 1].latitude;
+                    var lastlong = data[newcount - 1].longtitude;
+                    var latlang = new google.maps.LatLng(Number(lastlat), Number(lastlong));
+                    marker.setPosition(latlang);
+                    lastcount = newcount;
+                    drawComp(data);
+
+                }
+                setTimeout(moveMarker(sevkiyatId), 5000);
+                console.log("Count:" + newcount + "LastLat:" + lastlat + "LastLong:" + lastlong);
+            }
+        });
+    }
+
+    function drawComp(data) {
+       var poly = new google.maps.Polyline({
+           strokeColor: "#b71c1c",
+            strokeOpacity: 1.0,
+           strokeWeight: 3,
+           zIndex: 100
+
+        });
+        poly.setMap(map);
+        const path = poly.getPath();
+        data.forEach(item => {
+            var lastlat = item.latitude;
+            var lastlong = item.longtitude;
+            var latlang = new google.maps.LatLng(Number(lastlat), Number(lastlong));
+            path.push(latlang)
+        });
+
+
+    }
+</script>

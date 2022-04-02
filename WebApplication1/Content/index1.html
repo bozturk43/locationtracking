@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css' rel='stylesheet' />
+    <title>Document</title>
+</head>
+<style>
+    #map{
+        height: 400px;
+        width: 100%;
+    }
+</style>
+<body>
+    <h3>Map Demo</h3>
+    
+    <div id="map"></div>
+
+    
+    <script>
+        var poly;
+
+        function initMap(){
+            var options={
+                zoom:8,
+                center:{lat:41.112663,lng:29.021330}
+            }
+
+            var long=0;
+            var lati=0;
+            
+                       
+
+            var map=new google.maps.Map(document.getElementById("map"),options);
+
+            navigator.geolocation.getCurrentPosition(
+                data=>{
+                    
+                    long=data.coords.longitude;
+                    lati=data.coords.latitude;
+                    console.log(data);
+                    console.log(long,lati);
+
+                },
+                    error=>console.log(error)
+                );   
+
+            poly = new google.maps.Polyline({
+                strokeColor:"#00000",
+                strokeOpacity:1.0,
+                strokeWeight:3,
+            });
+
+            poly.setMap(map);
+            map.addListener("click",addLatLng);
+
+            /*
+            var marker=new google.maps.Marker({
+                position:{lat:41.112663,lng:29.021330},
+                map:map,
+                icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+            });
+
+            const infoWindow = new google.maps.InfoWindow({
+                content: "",
+                disableAutoPan: true,
+            });
+
+
+            marker.addListener("click",function(){
+                infoWindow.setContent("<h1>İnfo Page</h1>");
+                infoWindow.open(map, marker);
+            });*/
+
+            //Fonkisyon ile marker ekleme
+
+            var markers=[
+                {coords:{lat:41.112663,lng:29.021330},content:"<h1>DENEME BASLIK 1</h1>"},
+                {coords:{lat:41.016129,lng:29.084585},content:"<h1>DENEME BASLIK 2</h1>"},
+                {coords:{lat:41.038284,lng:28.970329},iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',content:"<h1>DENEME BASLIK 3</h1>"}
+                ];
+
+            addMarker({coords:{lat:lati,lng:long},content:"<h3>Konumum</h3>"});
+
+            markers.forEach(item => {
+                addMarker(item)
+                console.log(item);
+            });
+
+
+            function addMarker(props){
+                var marker=new google.maps.Marker({
+                position:props.coords,
+                map:map,
+                icon:props.iconImage
+            });
+            if(props.iconImage){
+                marker.setIcon(props.iconImage);
+            }
+            if(props.content){
+                
+                const infoWindow = new google.maps.InfoWindow({
+                content:"",
+                disableAutoPan: true,
+                });
+                marker.addListener("click",function(){
+                    infoWindow.setContent(props.content)
+                    infoWindow.open(map, marker);
+                });
+            }
+
+            }
+           
+        }
+
+        function addLatLng(event){
+            const path=poly.getPath();
+            path.push(event.latLng);
+
+            new google.maps.Marker({
+                position:event.latLng,
+                title:'#'+path.getLength(),
+                map:map,
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHrcxK3rvijsw_SZFYUh7wapTDufPXjIs&callback=initMap&v=weekly" async></script>   
+</body>
+</html>

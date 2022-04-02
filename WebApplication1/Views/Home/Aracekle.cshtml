@@ -1,0 +1,132 @@
+﻿@using WebApplication1.Models;
+@{
+    ViewBag.Title = "Aracekle";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xxl-3">
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title mb-0">Araç Ekle</h5>
+                                <p class="mt-2">Lütfen tüm bilgileri eksiksiz doldurun.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end card-->
+            </div>
+            <!--end col-->
+            <div class="col-xxl-9">
+                <div class="card mt-xxl-n5">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0"
+                            role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="./html/default/#personalDetails"
+                                   role="tab">
+                                    <i class="fas fa-home"></i>
+                                    Vehicle Details
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="personalDetails" role="tabpanel">
+                                <form action="~/Home/Aracekle" method="post" enctype="multipart/form-data">
+                                    <div class="row">
+
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label for="skillsInput" class="form-label">Marka Seçin</label>
+                                                <select class="form-control" name="markainput" data-choices
+                                                        data-choices-text-unique-true multiple id="skillsInput">
+                                                    <option value="Mercedes">Mercedes</option>
+                                                    <option value="Scania">Scania</option>
+                                                    <option value="Volvo">Volvo</option>
+                                                    <option value="DAF">DAF</option>
+                                                    <option value="Iveco" selected>Iveco</option>
+                                                    <option value="Renault Truck">Renault Truck</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label for="skillsInput" class="form-label">Model Seçin</label>
+                                                <select class="form-control" name="modelinput" data-choices
+                                                        data-choices-text-unique-true multiple id="skillsInput">
+                                                    <option value="Model A">Model A</option>
+                                                    <option value="Model B">Model B</option>
+                                                    <option value="Model C">Model C</option>
+                                                    <option value="Model D">Model D</option>
+                                                    <option value="Model F" selected>Model F</option>
+                                                    <option value="Model G">Model G</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label for="firstnameInput" class="form-label">Araç Plakası</label>
+                                                <input type="text" class="form-control" name="plakainput" id="plakaInput"
+                                                       placeholder="Enter your firstname">
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label for="cityInput" class="form-label">Araç Tipi</label>
+                                                <input type="text" class="form-control" id="cityInput" name="aractipinput"
+                                                       placeholder="City" value="Kg>12000" />
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label for="skillsInput" class="form-label">Durum</label>
+                                                <select class="form-control" name="duruminput" data-choices
+                                                        data-choices-text-unique-true multiple id="skillsInput">
+                                                    <option value="Bosta">Boşta</option>
+                                                    <option value="Bakımda" selected>Bakımda</option>
+                                                    <option value="Sevkiyat Bekliyor">Sevkiyat Bekliyor</option>
+                                                    <option value="Sevkiyatta">Sevkiyatta</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-lg-12">
+                                            <div class="hstack gap-2 justify-content-end">
+                                                <button type="submit"
+                                                        class="btn btn-primary">
+                                                    Kaydet
+                                                </button>
+                                                <button type="button"
+                                                        class="btn btn-soft-success">
+                                                    İptal
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                    </div>
+                                    <!--end row-->
+                                </form>
+                            </div>
+                            <!--end tab-pane-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+
+    </div>
+    <!-- container-fluid -->
+</div><!-- End Page-content -->
